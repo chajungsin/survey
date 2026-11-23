@@ -30,3 +30,5 @@ Supabase Dashboard > Authentication > Users에서 관리자 사용자를 생성�
 
 ## 참고
 공개 저장소에는 Supabase URL과 publishable key가 포함됩니다. 이는 브라우저 공개용 키이며, 데이터 접근은 RLS 정책으로 제한됩니다. 비밀 키를 커밋하지 마세요.
+
+배포 설정 확인 후 자동 배포가 실행됩니다.
