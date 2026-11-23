@@ -7,6 +7,9 @@ const satisfactionOptions = ['매우 만족', '만족', '보통', '불만족', '
 const agreementOptions = ['매우 그렇다', '그렇다', '보통', '그렇지 않다', '전혀 그렇지 않다']
 const intentOptions = ['적극적으로 참여하겠다', '참여할 의향이 있다', '보통이다', '참여하고 싶지 않다']
 
+// 관리자 화면에는 일반 아이디만 표시하고, Supabase Auth 내부에서만 별칭 이메일을 사용합니다.
+const ADMIN_AUTH_EMAIL = 'chajungsin@survey-admin.invalid'
+
 const questions = [
   { key: 'q2_reason', title: '축제에서 가장 좋았던 점은 무엇인가요?', options: reasonOptions },
   { key: 'q3_satisfaction', title: '축제 전반에 대해 얼마나 만족하셨나요?', options: satisfactionOptions },
@@ -122,7 +125,7 @@ function Survey({ onAdmin }) {
 }
 
 function Admin({ onBack }) {
-  const [email, setEmail] = useState('')
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [session, setSession] = useState(null)
   const [rows, setRows] = useState([])
@@ -144,7 +147,8 @@ function Admin({ onBack }) {
 
   async function login(e) {
     e.preventDefault(); setError('')
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password })
+    if (username.trim() !== 'chajungsin') return setError('로그인 정보를 확인해 주세요.')
+    const { data, error } = await supabase.auth.signInWithPassword({ email: ADMIN_AUTH_EMAIL, password })
     if (error) return setError('로그인 정보를 확인해 주세요.')
     if (data.user?.app_metadata?.role !== 'admin') {
       await supabase.auth.signOut()
@@ -178,8 +182,8 @@ function Admin({ onBack }) {
   if (!session) return <form className="admin-card" onSubmit={login}>
     <button type="button" className="back-link" onClick={onBack}>← 설문으로 돌아가기</button>
     <span className="eyebrow">ADMIN</span><h1>관리자 로그인</h1>
-    <p className="muted">관리자 계정으로 로그인해 주세요.</p>
-    <label className="input-label">이메일<input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} /></label>
+    <p className="muted">관리자 아이디와 비밀번호를 입력해 주세요.</p>
+    <label className="input-label">아이디<input type="text" autoComplete="username" required value={username} onChange={(e) => setUsername(e.target.value)} placeholder="관리자 아이디" /></label>
     <label className="input-label">비밀번호<input type="password" required value={password} onChange={(e) => setPassword(e.target.value)} /></label>
     {error && <p className="error-message">{error}</p>}
     <button className="primary-button" type="submit">로그인</button>
