@@ -8,7 +8,7 @@ const agreementOptions = ['매우 그렇다', '그렇다', '보통', '그렇지 
 const intentOptions = ['적극적으로 참여하겠다', '참여할 의향이 있다', '보통이다', '참여하고 싶지 않다']
 
 // 관리자 화면에는 일반 아이디만 표시하고, Supabase Auth 내부에서만 별칭 이메일을 사용합니다.
-const ADMIN_AUTH_EMAIL = 'chajungsin@survey-admin.invalid'
+const ADMIN_AUTH_EMAIL = 'chajungsin@gmail.com'
 
 const questions = [
   { key: 'q2_reason', title: '축제에서 가장 좋았던 점은 무엇인가요?', options: reasonOptions },
